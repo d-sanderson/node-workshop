@@ -19,9 +19,11 @@ let lions = [];
 let id = 0;
 
 const updateId = function(req, res, next) {
-
-
-  res.send(req.lion)
+  if(!req.body.id) {
+    id++;
+    req.body.id = id + '';
+  }
+  next();
   // fill this out. this is the route middleware for the ids
 };
 
@@ -30,13 +32,6 @@ app.use(express.static('client'));
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
-app.use(function(err, res, req, next ) {
-  if(err) {
-    res.status(500).send(error)
-
-  }
-
-});
 
 app.param('id', function(req, res, next, id) {
   // fill this out to find the lion based off the id
@@ -47,7 +42,9 @@ app.param('id', function(req, res, next, id) {
     next();
   }
   else {
+    //ends the request response cycle but you should put error status codes here
     res.send();
+    // next(new Error(''))
   }
 
 });
@@ -58,11 +55,12 @@ app.get('/lions', function(req, res){
 
 app.get('/lions/:id', function(req, res){
   // use req.lion
+  let lion = req.lion;
   res.json(lion || {});
 });
 
 app.post('/lions', updateId, function(req, res) {
-  var lion = req.body;
+  let lion = req.body;
 
   lions.push(lion);
 
@@ -71,19 +69,26 @@ app.post('/lions', updateId, function(req, res) {
 
 
 app.put('/lions/:id', function(req, res) {
-  var update = req.body;
+  let update = req.body;
   if (update.id) {
     delete update.id
   }
 
-  var lion = _.findIndex(lions, {id: req.params.id});
+  let lion = _.findIndex(lions, {id: req.params.id});
   if (!lions[lion]) {
     res.send();
   } else {
-    var updatedLion = _.assign(lions[lion], update);
+    let updatedLion = _.assign(lions[lion], update);
     res.json(updatedLion);
   }
 });
 
+
+app.use(function(err, res, req, next ) {
+  if(err) {
+    res.status(500).send(err)
+
+  }
+});
 app.listen(3000);
 console.log('on port 3000');
