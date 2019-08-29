@@ -30,13 +30,26 @@ app.use(express.static('client'));
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
+app.use(function(err, res, req, next ) {
+  if(err) {
+    res.status(500).send(error)
+
+  }
+
+});
 
 app.param('id', function(req, res, next, id) {
   // fill this out to find the lion based off the id
-  let lion = 
-
-  next();
+  let lion = _.find(lions, {id: id});
   // and attach it to req.lion. Rember to call next()
+  if(lion) {
+    req.lion = lion;
+    next();
+  }
+  else {
+    res.send();
+  }
+
 });
 
 app.get('/lions', function(req, res){
