@@ -1,5 +1,6 @@
-var mongoose = require('mongoose');
-
+const mongoose = require('mongoose');
+let dotenv = require('dotenv');
+dotenv.config();
 // connect to a database so the below will work.
 // what's happening is that we're createing a new schema
 // and making a todos collection and a Todo model.
@@ -9,7 +10,7 @@ var mongoose = require('mongoose');
 // and see if you see the todo below log in the terminal
 // run node db.Tester to execute this file
 // MAKE SURE MONGOD is RUNNING
-const db_uri = 'mongodb+srv://admin:abcd1234@cluster0-myg00.mongodb.net/todo?retryWrites=true&w=majority'
+const db_uri = process.env.DB_URI || 'nope'
 
 mongoose.connect(db_uri, {useNewUrlParser: true})
 
