@@ -9,6 +9,9 @@ var mongoose = require('mongoose');
 // and see if you see the todo below log in the terminal
 // run node db.Tester to execute this file
 // MAKE SURE MONGOD is RUNNING
+const db_uri = 'mongodb+srv://admin:abcd1234@cluster0-myg00.mongodb.net/todo?retryWrites=true&w=majority'
+
+mongoose.connect(db_uri, {useNewUrlParser: true})
 
 var TodoSchema = new mongoose.Schema({
   name: String,
