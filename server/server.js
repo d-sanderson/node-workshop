@@ -1,11 +1,11 @@
 var express = require('express');
 var app = express();
 var api = require('./api/api');
-var dotenv = require('dotenv');
+var config = require('./config/config');
+const dotenv = require('dotenv')
 dotenv.config();
-
 // db.url is different depending on NODE_ENV
-require('mongoose').connect(process.env.DB_URI, { useNewUrlParser: true });
+require('mongoose').connect(process.env.DB_URI, { useNewUrlParser: true});
 
 // setup the app middlware
 require('./middleware/appMiddlware')(app);

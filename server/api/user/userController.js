@@ -1,5 +1,5 @@
-const User = require('./userModel');
-const _ = require('lodash');
+var User = require('./userModel');
+var _ = require('lodash');
 
 exports.params = function(req, res, next, id) {
   User.findById(id)
@@ -25,14 +25,14 @@ exports.get = function(req, res, next) {
 };
 
 exports.getOne = function(req, res, next) {
-  let user = req.user;
+  var user = req.user;
   res.json(user);
 };
 
 exports.put = function(req, res, next) {
-  let user = req.user;
+  var user = req.user;
 
-  let update = req.body;
+  var update = req.body;
 
   _.merge(user, update);
 
@@ -46,7 +46,7 @@ exports.put = function(req, res, next) {
 };
 
 exports.post = function(req, res, next) {
-  let newUser = req.body;
+  var newUser = req.body;
 
   User.create(newUser)
     .then(function(user) {
