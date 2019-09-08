@@ -1,3 +1,21 @@
+let fs = require('fs')
+
+// Creating a promise
+let readFile = () => new Promise((res, rej) => {
+  fs.readFile('./package.json', (err, file) => {
+    return err ? rej(err) : res(file.toString())
+  });
+});
+
+// Consuming a promise
+readFile()
+  .then((file) => console.log(file))
+  .catch(err => console.log(err))
+
+// fs.readFile('./package.json', (err, file) => {
+//   console.log(file.toString())
+// })
+console.log('first')
 //  Promises examples
 
 //  Refact the example below to use a Promise instead of a Callback
@@ -13,10 +31,16 @@
 
 // Promise version of above code
 
-const promise_action = () =>
-    new Promise( (res, rej) => {
-    setTimeout(function() {
-      res('hey');
-    }, 5000);
-  });
-promise_action().then((word) => console.log(word))
+// const promise_action = () =>
+//     new Promise( (res, rej) => {
+//     setTimeout(function() {
+//       rej(new Error('noooo'));
+//     }, 5000);
+//   });
+
+// promise_action().then((word) => console.log(word))
+
+// let promise = promise_action()
+
+// promise.then((word) => console.log(word)).catch(err => console.log('ERROR', err))
+
