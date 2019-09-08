@@ -1,8 +1,9 @@
 var express = require('express');
-const dotenv = require('dotenv')
-dotenv.config();
 var app = express();
 var api = require('./api/api');
+var dotenv = require('dotenv');
+dotenv.config();
+
 // db.url is different depending on NODE_ENV
 require('mongoose').connect(process.env.DB_URI, { useNewUrlParser: true });
 
