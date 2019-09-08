@@ -1,40 +1,45 @@
-var Post = require('./postModel');
-var _ = require('lodash');
+const Post = require('./postModel');
+const _ = require('lodash');
 
 exports.params = function(req, res, next, id) {
   Post.findById(id)
-    .then(function(post) {
-      if (!post) {
-        next(new Error('No post with that id'));
-      } else {
-        req.post = post;
-        next();
-      }
-    }, function(err) {
+  .populate('author categories')
+  .exec()
+  .then(function(post) {
+    if (!post) {
+      next(new Error('No post with that id'));
+    } else {
+      req.post = post;
+      next();
+    }
+  }, function(err) {
       next(err);
     });
 };
 
 exports.get = function(req, res, next) {
   // need to populate here
-  let promise = Post.find({})
-  .populate('author')
-  .exec();
-  promise.then(function(posts){
-  }, function(err) {}
+  Post.find({})
+  .populate('author categories')
+  .exec()
+  .then(function(posts){
+    res.json(posts)
+  }, function(err) {
+    next(err)
+  }
   );
 
 };
 
 exports.getOne = function(req, res, next) {
-  var post = req.post;
+  let post = req.post;
   res.json(post);
 };
 
 exports.put = function(req, res, next) {
-  var post = req.post;
+  let post = req.post;
 
-  var update = req.body;
+  let update = req.body;
 
   _.merge(post, update);
 
@@ -48,7 +53,7 @@ exports.put = function(req, res, next) {
 };
 
 exports.post = function(req, res, next) {
-  var newpost = req.body;
+  let newpost = req.body;
 
   Post.create(newpost)
     .then(function(post) {

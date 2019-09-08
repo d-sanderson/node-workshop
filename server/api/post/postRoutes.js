@@ -8,11 +8,7 @@ router.route('/')
     logger.log('Hey from post!!');
     res.send({ok: true});
   });
-
-  router.route('/posts')
-  .get(function(req, res){
-    logger.log('Hey from post!!');
-    res.send({ok: true});
-  });
+router.post('/create', postController.put)
+  router.get('/posts', postController.get);
 
 module.exports = router;

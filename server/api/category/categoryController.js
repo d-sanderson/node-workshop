@@ -6,9 +6,9 @@ exports.params = function(req, res, next, id) {
   Category.findById(id)
   .then(function(category) {
     if (!category) {
-      next(new Error('No user with that id'));
+      next(new Error('No category with that id'));
     } else {
-      req.category = cateogory;
+      req.category = category;
       next();
     }
   }, function(err) {
