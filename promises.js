@@ -8,10 +8,29 @@ let readFile = () => new Promise((res, rej) => {
 });
 
 // Consuming a promise
-readFile()
-  .then((file) => console.log(file))
-  .catch(err => console.log(err))
+// readFile()
+//   .then((file) => console.log(file))
+//   .catch(err => console.log(err))
+// const logFile = () => readFile().then(() => readFile());
 
+
+// readFile()
+// .then(logFile)
+// .then(sendEmail)
+// .then(callHome)
+// .catch((err) => console.log(err))
+
+const readAllFiles = () => {
+  let promises = [readFile(), readFile(), readFile()];
+  return Promise.all(promises);
+}
+
+const logFile = () => {
+  return readFile()
+  .then(() => readFile());
+}
+
+readAllFiles().then(files => console.log(files))
 // fs.readFile('./package.json', (err, file) => {
 //   console.log(file.toString())
 // })
