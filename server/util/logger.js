@@ -1,32 +1,31 @@
-// no var needed here, colors will attached colors
+// no const needed here, colors will attached colors
 // to String.prototype
 require('colors');
-var _ = require('lodash');
+const _ = require('lodash');
 
-var config = require('../config/config');
+const config = require('../config/config');
 
 // create a noop (no operation) function for when loggin is disabled
-var noop = function(){};
+const noop = function(){};
 // check if loggin is enabled in the config
 // if it is, then use console.log
 // if not then noop
-var consoleLog = config.logging ? console.log.bind(console) : noop;
+const consoleLog = config.logging ? console.log.bind(console) : noop;
 
-var logger = {
+const logger = {
   log: function() {
+    let tag = '[ ✨ LOG ✨ ]'.green;
     // arguments is an array like object with all the passed
     // in arguments to this function
-    var args = _.toArray(arguments)
+    let args = _.toArray(arguments)
       .map(function(arg) {
         if(typeof arg === 'object') {
           // turn the object to a string so we
           // can log all the properties and color it
-          var string = JSON.stringify(arg, 2);
-          return string.magenta;
+          let string = JSON.stringify(arg, null, 2);
+          return tag + '  ' + string.cyan;
         } else {
-          // coerce to string to color
-          arg+='';
-          return arg.magenta;
+          return tag + '  ' + arg.cyan;
         }
       });
 
@@ -37,7 +36,15 @@ var logger = {
   },
 
   error: function() {
-    consoleLog.apply(console, _.toArray(arguments));
+    let args = _.toArray(arguments)
+      .map(function(arg) {
+        arg = arg.stack || arg;
+        let name = arg.name || '[ ❌ ERROR ❌ ]';
+        let log = name.yellow + '  ' + arg.red;
+        return log;
+      });
+
+    consoleLog.apply(console, args);
   }
 };
 

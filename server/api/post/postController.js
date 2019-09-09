@@ -1,9 +1,11 @@
-const Post = require('./postModel');
-const _ = require('lodash');
-const logger = require('../../util/logger');
+var Post = require('./postModel');
+var _ = require('lodash');
+var logger = require('../../util/logger');
 
 exports.params = function(req, res, next, id) {
   Post.findById(id)
+    .populate('author')
+    .exec()
     .then(function(post) {
       if (!post) {
         next(new Error('No post with that id'));
@@ -28,14 +30,14 @@ exports.get = function(req, res, next) {
 };
 
 exports.getOne = function(req, res, next) {
-  let post = req.post;
+  var post = req.post;
   res.json(post);
 };
 
 exports.put = function(req, res, next) {
-  let post = req.post;
+  var post = req.post;
 
-  let update = req.body;
+  var update = req.body;
 
   _.merge(post, update);
 
@@ -49,7 +51,7 @@ exports.put = function(req, res, next) {
 };
 
 exports.post = function(req, res, next) {
-  let newpost = req.body;
+  var newpost = req.body;
   Post.create(newpost)
     .then(function(post) {
       res.json(post);
